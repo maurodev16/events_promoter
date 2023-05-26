@@ -1,0 +1,68 @@
+name: events_app
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.0-136.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.6.5
+  http: ^0.13.5
+  get_storage: ^2.1.1
+  graphql_flutter: ^5.1.2
+  iconly: ^1.0.1
+  zoom_tap_animation: ^1.1.0
+  image_picker: ^0.8.7+1
+  file_picker: ^5.2.7
+  firebase_core: ^2.9.0
+  firebase_storage: ^11.1.0
+  dropdown_search: ^5.0.6
+  intl: ^0.18.0
+  flutter_masked_text2: ^0.9.1
+  cached_network_image: ^3.2.3
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.0
+  flutter_native_splash: ^2.2.19
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+  color: "#424750"
+  #background_image: "assets/images/logo_app.png"
+  image:  "assets/images/logo_app.png"
+  android_gravity: center
+  ios_content_mode: center
+  web_image_mode: center
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/lang/en_US.json
+    - assets/lang/pt_BR.json
+    - assets/lang/de_DE.json
+
+  fonts:
+    - family: HelveticaNeue
+      fonts:
+        - asset: assets/fonts/HelveticaNeue.ttf
+        - asset: assets/fonts/HelveticaNeue400.ttf
+          weight: 700
+
+flutter_icons: 
+  image_path: "assets/images/icon_launcher.png"
+  android: true
+  ios: true
+
+
+  

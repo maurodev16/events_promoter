@@ -1,0 +1,12 @@
+{
+    "signup": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "city": "City",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "welcomeMessage": "Welcome, you have successfully signed up!",
+    "errorOccurred": "Oops!!! An error occurred while signing up."
+  }
+  

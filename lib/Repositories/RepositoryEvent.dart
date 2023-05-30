@@ -26,29 +26,29 @@ class RepositoryParty implements IRepositoryParty {
 
   @override
   Future<List<EventModel>> getPromoterEvents(String promoterId) async {
-    try {
-      final response = await httpClient.get(
-        '$baseUrl/fetchEventByPromoter/$promoterId',
-        decoder: (body) {
-          if (body is List) {
-            print('RESPOSTA****: $body');
-            return body
-                .map<EventModel>((item) => EventModel.fromJson(item))
-                .toList();
-          } else {
-            throw Exception('A resposta da API não é uma lista');
-          }
-        },
-      );
-      if (response.isOk) {
-        return response.body!.cast<EventModel>();
-      } else {
-        throw Exception('Erro ao buscar os eventos');
-      }
-    } catch (error) {
-      print('REPOSITORY ERROR: $error');
-      throw Exception(error);
+    // try {
+    final response = await httpClient.get(
+      '$baseUrl/fetchEventByPromoter/$promoterId',
+      decoder: (body) {
+        if (body is List) {
+          print('RESPOSTA****: $body');
+          return body
+              .map<EventModel>((item) => EventModel.fromJson(item))
+              .toList();
+        } else {
+          throw Exception('A resposta da API não é uma lista');
+        }
+      },
+    );
+    if (response.isOk) {
+      return response.body!.cast<EventModel>();
+    } else {
+      throw Exception('Erro ao buscar os eventos');
     }
+    // } catch (error) {
+    //   print('REPOSITORY ERROR: $error');
+    //   throw Exception(error);
+    // }
   }
 
   @override

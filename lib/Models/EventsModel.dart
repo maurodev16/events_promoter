@@ -16,8 +16,8 @@ class EventModel {
   final double? entrancePrice;
   final String? organizedBy;
   final bool? forAdultsOnly;
-  final DateTime? startDate;
-  final DateTime? endDate;
+  final String? startDate;
+  final String? endDate;
   final String? startTime;
   final String? endTime;
   final String? paymentInfo;
@@ -72,8 +72,8 @@ class EventModel {
       entrancePrice: json['entrance_price'].toDouble(),
       organizedBy: json['organized_by'],
       forAdultsOnly: json['for_adults_only'],
-      startDate: DateTime.parse(json['start_date']),
-      endDate: DateTime.parse(json['end_date']),
+      startDate: json['start_date'],
+      endDate: json['end_date'],
       startTime: json['start_time'],
       endTime: json['end_time'],
       paymentInfo: json['paymentInfo'],
@@ -102,8 +102,8 @@ class EventModel {
       'entrance_price': entrancePrice,
       'organized_by': organizedBy,
       'for_adults_only': forAdultsOnly,
-      'start_date': startDate!.toIso8601String(),
-      'end_date': endDate!.toIso8601String(),
+      'start_date': startDate!,
+      'end_date': endDate!,
       'start_time': startTime,
       'end_time': endTime,
       'paymentInfo': paymentInfo,

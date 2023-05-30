@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:events_app/Models/EventsModel.dart';
 import 'package:events_app/Models/PromoterModel.dart';
 import 'package:events_app/Repositories/IRepositoryEvent.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
@@ -23,7 +25,7 @@ class EventController extends GetxController with StateMixin {
 
   @override
   void onReady() async {
-    //_loginController.logout();
+    // _loginController.logout();
     loadPromoterEvents();
     super.onReady();
   }
@@ -31,13 +33,22 @@ class EventController extends GetxController with StateMixin {
   final storage = GetStorage();
   final hourInputController = MaskedTextController(mask: '00:00');
 
-  final _selectedDate = DateTime.now().obs;
-  DateTime get selectedDate => _selectedDate.value;
-  final _dateController = TextEditingController().obs;
-  TextEditingController get dateController => _dateController.value;
+  final _selectedStartDate = Rx<DateTime?>(null);
+  final _selectedEndDate = Rx<DateTime?>(null);
+  final TextEditingController txtStartDateController = TextEditingController();
+  final TextEditingController txtEndDateController = TextEditingController();
+  DateTime get selectedStartDate => _selectedStartDate.value ?? DateTime.now();
+  DateTime get selectedEndDate => _selectedEndDate.value ?? DateTime.now();
+
+  ///
+  final _textEditCityController = TextEditingController().obs;
+  TextEditingController get textEditCityController =>
+      _textEditCityController.value;
+
   final ProfileController controller = Get.find();
   var eventsModelX = EventModel().obs;
   var promoterModel = PromoterModel().obs;
+  Rx<File?> pickedImageUrl = Rx<File?>(null);
 
   var isLoading = false.obs;
   var errorMessage = "".obs;
@@ -52,6 +63,8 @@ class EventController extends GetxController with StateMixin {
   var entrancePrice = 0.0.obs;
   var organizedBy = "".obs;
   var forAdultsOnly = true.obs;
+  var startDate = "".obs;
+  var endDate = "".obs;
   var startTime = "".obs;
   var endTime = "".obs;
   var paymentInfo = "".obs;
@@ -65,14 +78,19 @@ class EventController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  // void selectUser(UserModel user) {
-  //   // adicione o usuário selecionado à lista de usuários selecionados
-  //   selectedUsers.add(user);
+  Future<void> pickImage() async {
+    final pickedFiles = await FilePicker.platform.pickFiles(
+      type: FileType.image, // Restringe a seleção a arquivos de imagem
+      allowMultiple: false, // Permite selecionar apenas um arquivo
+    );
 
-  //   // limpe o campo de pesquisa e a lista de usuários filtrados
-  //   searchText = '';
-  //   filteredUsers.assignAll(users);
-  // }
+    if (pickedFiles != null && pickedFiles.files.isNotEmpty) {
+      final pickedFile = pickedFiles.files.single;
+      final file = File(pickedFile.path!);
+      pickedImageUrl.value = (file);
+      print("IMAGE PICKED++++++++${file.path}");
+    }
+  }
 
   bool validateHour(String hourStr) {
     try {
@@ -113,7 +131,7 @@ class EventController extends GetxController with StateMixin {
         errorMessage = error.toString();
       }
       // Trate a mensagem de erro e atualize a interface do usuário
-      change([], status: RxStatus.error(errorMessage));
+      change([], status: RxStatus.error("No Events til now"));
       print("-------$errorMessage");
       allEvents.clear();
       allEvents.value = [];
@@ -121,22 +139,39 @@ class EventController extends GetxController with StateMixin {
   }
 
   Future<void> selecteDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedStart = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: _selectedStartDate.value!,
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-    if (picked != null) {
-      _selectedDate.value = picked;
-      _dateController.value.text = DateFormat('dd.MM.yyyy').format(picked);
+    final DateTime? pickedEnd = await showDatePicker(
+      context: context,
+      initialDate: _selectedEndDate.value!,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (pickedStart != null && pickedEnd != null) {
+      _selectedStartDate.value = pickedStart;
+      _selectedEndDate.value = pickedEnd;
+      txtStartDateController.value =
+          DateFormat('dd.MM.yyyy').format(pickedStart) as TextEditingValue;
+      txtEndDateController.value =
+          DateFormat('dd.MM.yyyy').format(pickedEnd) as TextEditingValue;
     }
   }
 
-  String get formatteddate => DateFormat('yyyy-MM-dd').format(selectedDate);
-  Map<String, dynamic> get date => {'date': formatteddate};
+  String get formattedStartdate =>
+      DateFormat('yyyy-MM-dd').format(selectedStartDate);
+  Map<String, dynamic> get startDt => {'startDate': formattedStartdate};
 
-  String get jsonDate => jsonEncode(date);
+  ///
+  String get formattedEnddate =>
+      DateFormat('yyyy-MM-dd').format(selectedEndDate);
+  Map<String, dynamic> get endDt => {'endDate': formattedEnddate};
+
+  String get jsonStartDate => jsonEncode(startDate.value);
+  String get jsonEndDate => jsonEncode(endDate.value);
 
   ///FUNCAO PARTY
   Future<void> createParty() async {
@@ -160,13 +195,13 @@ class EventController extends GetxController with StateMixin {
       description: description.value,
       cityName: cityName.value,
       //artists: ArtistsModel.,
-      bannerUrl: bannerUrl.value,
+      bannerUrl: pickedImageUrl.value!.path,
       //country: cr,
-      startDate: dateTime,
+      startDate: endDate.value,
+      endDate: startDate.value,
       startTime: startTime.value,
-      endDate: dateTime,
       endTime: endTime.value,
-      likesCount: likesCount.value,
+      // likesCount: likesCount.value,
       number: number.value,
       organizedBy: organizedBy.value,
       entrancePrice: entrancePrice.value,

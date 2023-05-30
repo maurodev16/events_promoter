@@ -1,8 +1,7 @@
 import 'package:events_app/Controllers/CityController.dart';
-import 'package:events_app/Controllers/RegisterController.dart';
+import 'package:events_app/Controllers/RegisterPromoterController.dart';
 import 'package:events_app/Pages/Container/ContainerPage.dart';
 import 'package:events_app/Utils/Const.dart';
-import 'package:events_app/Utils/Widgets/WidgetAppBar.dart';
 import 'package:events_app/Utils/Widgets/customDropdownCities.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: "Cadastrar"),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 16.0, right: 16),

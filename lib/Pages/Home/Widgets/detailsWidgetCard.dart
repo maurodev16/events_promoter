@@ -17,37 +17,6 @@ Widget detailWidget() {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: Icon(Icons.favorite_border), //state.isLiked.value
-                // ? Icons.favorite
-                // : Icons.favorite_border),
-                onPressed: () {
-                  // state.isLiked.value = !state.isLiked.value;
-                  // if (state.isLiked.value) {
-                  //   state.likeCount++;
-                  //   state.likedBy
-                  //       .add('User ${state.likedBy.length + 1}');
-                  // } else {
-                  //   state.likeCount--;
-                  //   state.likedBy.removeLast();
-                  // }
-                },
-              ),
-              // ignore: unnecessarystatenullstatecomparison
-              // state.likeCount != null
-              //     ? Text(
-              //         '${state.likeCount.value}',
-              //         style: TextStyle(
-              //           fontSize: 14,
-              //           color: Colors.grey[600],
-              //         ),
-              //       )
-              //     : Container(),
-            ],
-          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -96,7 +65,7 @@ Widget detailWidget() {
             padding:
                 const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
             child: Text(
-              '${DateFormat('dd.MM.yyyy').format(events.startDate!)} as ${events.startTime!}', // format the date using the intl package
+              '${DateFormat('dd.MM.yyyy').format(events.startDate! as DateTime)} as ${events.startTime!}', // format the date using the intl package
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.grey[500],
@@ -149,8 +118,7 @@ Widget detailWidget() {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: TextButton.icon(
-                          label: Text(
-                              "controller.confirmedParticipantsCount.value"),
+                          label: Text("0"),
                           onPressed: () {
                             Get.to(() => DetailsCardPage(), arguments: events);
                           },

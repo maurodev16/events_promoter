@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 final TextEditingController searchController = TextEditingController();
 
-PreferredSize appBar = customAppBar(
+PreferredSize appBar0 = customAppBar0(
   title: '',
   //icon1: Icons.search,
   // icon2: Icons.icon2,
@@ -15,7 +15,7 @@ PreferredSize appBar = customAppBar(
   },
 );
 
-PreferredSize customAppBar({
+PreferredSize customAppBar0({
   String? title,
   IconData? icon1,
   IconData? icon2,
@@ -69,7 +69,7 @@ PreferredSize customAppBar({
             ),
             controller: searchController,
             decoration: InputDecoration(
-              hintText: 'Pesquisar eventos',
+              hintText: 'Search Events',
               hintStyle: TextStyle(
                 color: Colors.white70,
               ),
@@ -88,6 +88,57 @@ PreferredSize customAppBar({
           ),
         ),
       ),
+    ),
+  );
+}
+
+PreferredSize appBar1 = customAppBar1(
+  title: '',
+  //icon1: Icons.search,
+  // icon2: Icons.icon2,
+  // avatar: Avatar(),
+);
+PreferredSize customAppBar1({
+  String? title,
+  IconData? icon1,
+  IconData? icon2,
+  Widget? avatar,
+}) {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(100),
+    child: AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: preto_forte,
+      elevation: 0,
+      flexibleSpace: avatar,
+      title: Text(
+        title!,
+        style: TextStyle(
+          color: branco,
+          fontWeight: FontWeight.bold,
+          fontFamily: "HelveticaNeue",
+          fontSize: 15,
+        ),
+      ),
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            icon1,
+            color: branco,
+            size: 18,
+          ),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(
+            icon2,
+            color: branco,
+            size: 18,
+          ),
+          onPressed: () {},
+        ),
+      ],
     ),
   );
 }

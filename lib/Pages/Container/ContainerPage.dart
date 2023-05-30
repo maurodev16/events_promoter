@@ -16,7 +16,7 @@ class ContainerPage extends GetView<ContainerController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: appBar,
+        appBar: controller.currentPage.value == 0 ? appBar0 : appBar1,
         body: PageView(
           physics: NeverScrollableScrollPhysics(),
           controller: controller.pageController,

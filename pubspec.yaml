@@ -17,6 +17,7 @@ dependencies:
   zoom_tap_animation: ^1.1.0
   image_picker: ^0.8.7+1
   file_picker: ^5.2.7
+  images_picker: ^1.2.11
   firebase_core: ^2.9.0
   firebase_storage: ^11.1.0
   dropdown_search: ^5.0.6

@@ -3,7 +3,7 @@ import 'package:events_app/Controllers/CityController.dart';
 import 'package:events_app/Controllers/EventController.dart';
 import 'package:events_app/Controllers/GeneralEventsController.dart';
 import 'package:events_app/Controllers/ProfileController.dart';
-import 'package:events_app/Controllers/RegisterController.dart';
+import 'package:events_app/Controllers/RegisterPromoterController.dart';
 import 'package:events_app/Controllers/SettingsController.dart';
 import 'package:events_app/Repositories/IRepositoryAvatar.dart';
 import 'package:events_app/Repositories/IRepositoryCity.dart';

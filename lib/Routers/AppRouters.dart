@@ -6,7 +6,6 @@ import 'package:events_app/Pages/RegisterPage.dart';
 import 'package:events_app/Pages/SplashPage.dart';
 import 'package:get/get.dart';
 
-import '../Pages/GeneralEventsPage.dart';
 import '../Pages/LoginPage.dart';
 import '../Pages/ThemePage.dart';
 
@@ -28,7 +27,6 @@ class AppRoutes {
     GetPage(name: REGISTER, page: () => RegisterPage()),
     GetPage(name: PARTYPAGE, page: () => EventsPage()),
     GetPage(name: CREATEPARTY, page: () => CreatePartyPage()),
-    GetPage(name: GENERALEVENTSPAGE, page: () => GeneralEventsPage()),
     GetPage(name: LANGUAGEPAGE, page: () => LanguagePage()),
     GetPage(name: THEMEPAGE, page: () => ThemePage()),
   ];

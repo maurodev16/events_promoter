@@ -1,5 +1,4 @@
 import 'package:events_app/Utils/Const.dart';
-import 'package:events_app/Utils/Widgets/WidgetAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +8,6 @@ class LanguagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(title: "Choose a language"),
       body: GetBuilder<SettingsController>(
         builder: (controller) {
           return Column(

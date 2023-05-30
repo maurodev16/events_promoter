@@ -27,6 +27,7 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+
     var id = storage.read<String>('id');
     var email = storage.read<String>('email');
     var token = storage.read<String>('token');

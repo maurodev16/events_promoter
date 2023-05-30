@@ -2,7 +2,7 @@ import 'package:events_app/Controllers/LoginController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Controllers/RegisterController.dart';
+import '../Controllers/RegisterPromoterController.dart';
 import '../Controllers/SettingsController.dart';
 import '../Utils/Const.dart';
 

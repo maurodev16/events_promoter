@@ -147,7 +147,7 @@ class ProfilePage extends StatelessWidget {
                                                     right: 16.0,
                                                     bottom: 8.0),
                                                 child: Text(
-                                                  '${DateFormat('dd.MM.yyyy').format(event.startDate!)} as ${event.startTime!}', // format the date using the intl package
+                                                  '${DateFormat('dd.MM.yyyy').format(event.startDate as DateTime)} as ${event.startTime!}', // format the date using the intl package
                                                   style: TextStyle(
                                                     fontSize: 13,
                                                     color: Colors.grey[500],

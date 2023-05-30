@@ -1,254 +1,264 @@
 import 'package:events_app/Controllers/EventController.dart';
-import 'package:events_app/Controllers/LoginController.dart';
-import 'package:events_app/Utils/Const.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 
 import '../../Models/EventsModel.dart';
-import 'DetailsCardPage.dart';
+import '../../Utils/Const.dart';
 
-class EventsPage extends StatelessWidget {
-  final EventController eventController = Get.find();
-  final LoginController logincontroller = Get.find();
+class EventsPage extends GetView<EventController> {
+  final EventController controller = Get.find();
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: preto_forte,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildAllEventsSection(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAllEventsSection() {
     return GetBuilder<EventController>(
-      builder: (controller) => Scaffold(
-        backgroundColor: preto_forte,
-        body: controller.status.isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : controller.status.isEmpty
-                ? Center(child: Text('All Party will be displayed here'))
-                : controller.status.isError
-                    ? Center(
-                        child: Text(controller.status.errorMessage.toString()),
-                      )
-                    : controller.status.isSuccess
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RefreshIndicator(
-                              onRefresh: controller.loadData,
-                              backgroundColor: preto_forte,
-                              color: branco,
-                              displacement: 25,
-                              edgeOffset: 2,
-                              child: Expanded(
-                                child: ListView.builder(
-                                  itemCount: controller.allEvents.length,
-                                  itemBuilder: (context, index) {
-                                    EventModel events =
-                                        controller.allEvents[index];
-                                    return Container(
-                                      height: Get.width,
-                                      child: Card(
-                                        key: Key('$index'),
-                                        elevation: 4,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+      builder: (controller) {
+        if (controller.status.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (controller.status.isEmpty) {
+          return Center(
+            child: Text('Your Party will be displayed here'),
+          );
+        } else if (controller.status.isError) {
+          return Center(
+            child: Text(controller.status.errorMessage!),
+          );
+        } else if (controller.status.isSuccess) {
+          return RefreshIndicator(
+            onRefresh: controller.loadData,
+            backgroundColor: preto_forte,
+            color: branco,
+            displacement: 25,
+            edgeOffset: 2,
+            child: Container(
+              height: Get.height,
+              padding: EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.allEvents.length,
+                      itemBuilder: (context, index) {
+                        EventModel event = controller.allEvents[index];
+                        return Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Container(
+                            height: 140,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 130,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10)),
+                                    image: DecorationImage(
+                                      image: NetworkImage(event.bannerUrl!),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          event.title!,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            color: cinza_w500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                IconButton(
-                                                  icon: Icon(Icons
-                                                      .favorite_border), //state.isLiked.value
-                                                  // ? Icons.favorite
-                                                  // : Icons.favorite_border),
-                                                  onPressed: () {
-                                                    // state.isLiked.value = !state.isLiked.value;
-                                                    // if (state.isLiked.value) {
-                                                    //   state.likeCount++;
-                                                    //   state.likedBy
-                                                    //       .add('User ${state.likedBy.length + 1}');
-                                                    // } else {
-                                                    //   state.likeCount--;
-                                                    //   state.likedBy.removeLast();
-                                                    // }
-                                                  },
-                                                ),
-                                                // ignore: unnecessarystatenullstatecomparison
-                                                // state.likeCount != null
-                                                //     ? Text(
-                                                //         '${state.likeCount.value}',
-                                                //         style: TextStyle(
-                                                //           fontSize: 14,
-                                                //           color: Colors.grey[600],
-                                                //         ),
-                                                //       )
-                                                //     : Container(),
-                                              ],
+                                            Icon(
+                                              Icons.location_city,
+                                              color: cinza_w500,
+                                              size: 11,
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Text(
-                                                '${events.title.toString()}',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0,
-                                                  right: 16.0,
-                                                  bottom: 8.0),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    '${events.placeName.toString()}',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.grey[600],
-                                                    ),
-                                                  ),
-                                                  IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
-                                                      IconlyLight.location,
-                                                      size: 18,
-                                                      color: cinza_w500,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0,
-                                                  right: 16.0,
-                                                  bottom: 8.0),
-                                              child: Text(
-                                                '${events.street.toString()}',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.grey[500],
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0,
-                                                  right: 16.0,
-                                                  bottom: 8.0),
-                                              child: Text(
-                                                '${DateFormat('dd.MM.yy').format(events.startDate!)} as ${events.startTime!}', // format the date using the intl package
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.grey[500],
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0,
-                                                  right: 16.0,
-                                                  bottom: 8.0),
-                                              child: Text(
-                                                'Info: ${events.description}',
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.grey[500],
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Row(
-                                                    children: [
-                                                      CircleAvatar(
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                'https://source.unsplash.com/random'),
-                                                      ),
-                                                      SizedBox(width: 8.0),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Text(
-                                                            'Criado por',
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                              color: Colors
-                                                                  .grey[600],
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '${events.organizedBy}',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Expanded(
-                                                        child: Align(
-                                                          alignment: Alignment
-                                                              .centerRight,
-                                                          child:
-                                                              TextButton.icon(
-                                                            label: Text(
-                                                              "confirmController.confirmedParticipantsCount.value",
-                                                              style: TextStyle(
-                                                                color:
-                                                                    cinza_w500,
-                                                              ),
-                                                            ),
-                                                            onPressed: () {
-                                                              Get.to(
-                                                                () =>
-                                                                    DetailsCardPage(),
-                                                                arguments:
-                                                                    events,
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                              IconlyBold.user_3,
-                                                              color: cinza_w500,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
+                                            Text(
+                                              event.cityName!,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: cinza_w500,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    );
-                                  },
+                                        SizedBox(height: 4),
+                                        // Row(
+                                        //   children: [
+                                        //     Icon(
+                                        //       IconlyLight.location,
+                                        //       color: cinza_w500,
+                                        //       size: 10,
+                                        //     ),
+                                        //     Text(
+                                        //       "${event.street!}, ",
+                                        //       style: TextStyle(
+                                        //         fontSize: 12,
+                                        //         color: cinza_w500,
+                                        //         fontWeight: FontWeight.bold,
+                                        //       ),
+                                        //     ),
+                                        //     Text(
+                                        //       event.number!,
+                                        //       style: TextStyle(
+                                        //         fontSize: 10,
+                                        //         color: cinza_w500,
+                                        //         fontWeight: FontWeight.bold,
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          event.placeName!,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: preto_forte,
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Icon(
+                                                  IconlyLight.calendar,
+                                                  color: cinza_w500,
+                                                  size: 10,
+                                                ),
+                                                Text(
+                                                  'DATUM',
+                                                  style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: vermelho,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${DateFormat('dd.MM.yy').format(event.startDate as DateTime)}',
+                                                  style: TextStyle(
+                                                    color: cinza_w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${DateFormat('dd.MM.yy').format(event.endDate as DateTime)}',
+                                                  style: TextStyle(
+                                                    color: cinza_w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(width: 10),
+                                            Column(
+                                              children: [
+                                                Icon(
+                                                  IconlyLight.time_circle,
+                                                  color: cinza_w500,
+                                                  size: 12,
+                                                ),
+                                                Text(
+                                                  'TIME',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: vermelho,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${DateFormat('dd.MM.yy').format(event.startTime! as DateTime)}',
+                                                  style: TextStyle(
+                                                    color: cinza_w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${DateFormat('dd.MM.yy').format(event.endTime as DateTime)}',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: cinza_w500,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //       top: 8.0, right: 20),
+                                //   child: Row(
+                                //     children: [
+                                //       CircleAvatar(
+                                //         radius: 15,
+                                //         backgroundColor: preto_fraco,
+                                //         child: Icon(
+                                //           IconlyBold.notification,
+                                //           color: branco,
+                                //           size: 15,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // )
+                              ],
                             ),
-                          )
-                        : Center(
-                            child:
-                                Text('All Your Events will be displayed here'),
                           ),
-      ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        } else {
+          return Center(
+            child: Text(controller.status.errorMessage!),
+          );
+        }
+      },
     );
   }
 }
